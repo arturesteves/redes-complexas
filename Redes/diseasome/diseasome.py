@@ -65,9 +65,9 @@ def algo2(G, iterations, print_skip_number=1):
 			G.remove_node(sorted_nodes[i][0])
 			ncci = nx.number_connected_components(G)
 			if i % print_skip_number == 0:
-				writer.writerow((i + 1) + ", " + ncci + ", " + Gcn)
 				Gc = max(nx.connected_component_subgraphs(G), key=len)
 				Gcn = nx.number_connected_components(Gc)
+				writer.writerow(str(i + 1) + ", " + str(ncci) + ", " + str(Gcn))
 				print "%d,%d,%d" % (i + 1, ncci, Gcn)
 
 	return G
