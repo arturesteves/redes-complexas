@@ -30,10 +30,10 @@ def load_graph(network_name = "diseasome"):
 #orders the nodes using the metric
 def get_ordered_nodes(G):
 	#For highest degree_centrality
-	#metric_dic = nx.degree_centrality(G)
+	metric_dic = nx.degree_centrality(G)
 
 	#For highest betweenes_centrality
-	metric_dic = nx.betweenness_centrality(G)
+	#metric_dic = nx.betweenness_centrality(G)
 	sorted_nodes = sorted(metric_dic.items(), key=operator.itemgetter(1), reverse=True)
 	return sorted_nodes
 
@@ -53,29 +53,32 @@ def algo1(G, iterations, print_skip_number=1):
 
 	return G
 
-def algo2(G, iterations, print_skip_number=1):
+def algo2(G, iterations, print_skip_number=1, file_name="output"):
 	## first sort by the metric in decending order
 	## than remove one by one n times and for each time compute the
 	## connected components
 	sorted_nodes = get_ordered_nodes(G)
-	with open("outputAlgo.csv", "wb") as csv_file:
+	with open(file_name + ".csv", "wb") as csv_file:
 		writer = csv.writer(csv_file, delimiter=',')
 		for i in range(0, iterations):
-			#print "Disconnecting %s" % (sorted_nodes[i][0]) 
+			print "Disconnecting %s" % (sorted_nodes[i][0]) 
 			G.remove_node(sorted_nodes[i][0])
 			ncci = nx.number_connected_components(G)
 			if i % print_skip_number == 0:
-				Gc = max(nx.connected_component_subgraphs(G), key=len)
-				Gcn = nx.number_connected_components(Gc)
-				writer.writerow(str(i + 1) + ", " + str(ncci) + ", " + str(Gcn))
-				print "%d,%d,%d" % (i + 1, ncci, Gcn)
+				try:
+					Gc = max(nx.connected_component_subgraphs(G), key=len)
+					Gcn = nx.number_of_nodes(Gc)
+					writer.writerow([str(i + 1), str(ncci), str(Gcn)])
+					print "%d,%d,%d" % (i + 1, ncci, Gcn)
+				except ex:
+					return
 
 	return G
 
 
 G = None
 #print 'Network name: ' + sys.argv[1]
-if sys.argv[1] != None:
+if len(sys.argv) > 0:
 	G = load_graph(network_name=sys.argv[1])
 else:
 	G = load_graph()
@@ -86,8 +89,10 @@ Gc = max(nx.connected_component_subgraphs(G), key=len)
 Gcn = nx.number_connected_components(Gc)
 print "%d,%d,%d" % (0, ncc1, Gcn)
 
-if sys.argv[2] != None:
+if len(sys.argv) == 2:
 	G = algo2(G, G.number_of_nodes(), int(sys.argv[2]))
+elif len(sys.argv) == 3:
+	G = algo2(G, G.number_of_nodes(), int(sys.argv[2]), sys.argv[3])
 else:
 	G = algo2(G, G.number_of_nodes())
 
