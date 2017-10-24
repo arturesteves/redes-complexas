@@ -45,6 +45,7 @@ def algo1(G, iterations, print_skip_number=1):
 		sorted_nodes = get_ordered_nodes(G)
 		print "Disconnecting %s" % (sorted_nodes[i][0]) 
 		G.remove_node(sorted_nodes[i][0])
+		ncci = nx.number_connected_components(G)
 		if i % print_skip_number == 0:
 			Gc = max(nx.connected_component_subgraphs(G), key=len)
 			Gcn = nx.number_connected_components(Gc)
@@ -57,14 +58,17 @@ def algo2(G, iterations, print_skip_number=1):
 	## than remove one by one n times and for each time compute the
 	## connected components
 	sorted_nodes = get_ordered_nodes(G)
-	for i in range(0, iterations):
-		#print "Disconnecting %s" % (sorted_nodes[i][0]) 
-		G.remove_node(sorted_nodes[i][0])
-		ncci = nx.number_connected_components(G)
-		if i % print_skip_number == 0:
-			Gc = max(nx.connected_component_subgraphs(G), key=len)
-			Gcn = nx.number_connected_components(Gc)
-			print "%d,%d,%d" % (i + 1, ncci, Gcn)
+	with open("outputAlgo.csv", "wb") as csv_file:
+		writer = csv.writer(csv_file, delimiter=',')
+		for i in range(0, iterations):
+			#print "Disconnecting %s" % (sorted_nodes[i][0]) 
+			G.remove_node(sorted_nodes[i][0])
+			ncci = nx.number_connected_components(G)
+			if i % print_skip_number == 0:
+				writer.writerow((i + 1) + ", " + ncci + ", " + Gcn)
+				Gc = max(nx.connected_component_subgraphs(G), key=len)
+				Gcn = nx.number_connected_components(Gc)
+				print "%d,%d,%d" % (i + 1, ncci, Gcn)
 
 	return G
 
@@ -83,7 +87,7 @@ Gcn = nx.number_connected_components(Gc)
 print "%d,%d,%d" % (0, ncc1, Gcn)
 
 if sys.argv[2] != None:
-	G = algo2(G, G.number_of_nodes(), sys.argv[2])
+	G = algo2(G, G.number_of_nodes(), int(sys.argv[2]))
 else:
 	G = algo2(G, G.number_of_nodes())
 
