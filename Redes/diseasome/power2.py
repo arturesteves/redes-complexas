@@ -56,12 +56,12 @@ def algo1(G, iterations, print_skip_number=1):
 
 	return G
 
-def algo2(G, iterations, print_skip_number=1, file_name="dataset_diseasome_degree"):
+def algo2(G, iterations, print_skip_number=1, file_name="dataset_power_degree"):
 	## first sort by the metric in decending order
 	## than remove one by one n times and for each time compute the
 	## connected components
 	sorted_nodes = get_ordered_nodes(G)
-	#shuffle(sorted_nodes)
+
 
 	with open(file_name + ".csv", "wb") as csv_file:
 		writer = csv.writer(csv_file, delimiter=',')
