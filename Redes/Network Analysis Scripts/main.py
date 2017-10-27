@@ -209,9 +209,12 @@ if __name__ == "__main__":
      based on the metric betweenness centrality and plot the
      graph every 5 iterations
     '''
-    print_iterations(biological_network, graph, iterations, 20)
+    #print_iterations(biological_network, graph, iterations, 20)
+
+
+
     graph = load_graph(network_name=power_network)
-    print_iterations(power_network, graph, iterations, 20)
+    #print_iterations(power_network, graph, iterations, 20)
 
     # compute_average_degree(graph)
-    # degree_distribution(graph, network_name)
+    degree_distribution(graph, network_name=power_network)
