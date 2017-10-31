@@ -275,7 +275,6 @@ if __name__ == "__main__":
     iterations = 101
     jump = 20
 
-    """
     network = "diseasome"
     metric = "degree_centrality"
     graph = load_graph(network_name=network)
@@ -292,7 +291,6 @@ if __name__ == "__main__":
     attack_network(network, graph, iterations, jump, metric)
     generate_gif(network, iterations, jump, metric)
 
-    """
     network = "power"
     metric = "degree_centrality"
     graph = load_graph(network_name=network)
