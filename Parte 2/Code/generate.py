@@ -20,20 +20,14 @@ def cascade(graph, initial_loads, tolerance):
 	while not stable:
 		stable = True
 		current_load = num_spaths(graph)
-		remove_list = []
 		for node_load in current_load.items():
 			node = node_load[0]
 			load = node_load[1]
 			if load > (1 + tolerance) * initial_loads[node]:
-				remove_list.append(node)
-
-		if(len(remove_list) > 0):
-			stable = False
-			for node in remove_list:
-				print("Node Removed by cascading")
 				graph.remove_node(node)
+				print("Node Removed by cascading")
+				stable = False
 				break
-		
 
 # removes a random node and cascades
 def remove_random(graph, initial_loads, tolerance):
