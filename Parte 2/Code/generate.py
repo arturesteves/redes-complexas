@@ -18,6 +18,7 @@ def num_spaths(graph):
 def cascade(graph, initial_loads, tolerance):
 	stable = False
 	while not stable:
+		stable = True
 		current_load = num_spaths(graph)
 		remove_list = []
 		for node_load in current_load.items():
@@ -31,7 +32,7 @@ def cascade(graph, initial_loads, tolerance):
 				print("Node Removed by cascading")
 				graph.remove_node(node)
 				break
-		stable = True
+		
 
 # removes a random node and cascades
 def remove_random(graph, initial_loads, tolerance):
