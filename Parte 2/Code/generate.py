@@ -28,6 +28,7 @@ def cascade(graph, initial_loads, tolerance):
 				remove_list.append(node)
 
 		if(len(remove_list) > 0):
+			stable = False
 			for node in remove_list:
 				print("Node Removed by cascading")
 				graph.remove_node(node)
