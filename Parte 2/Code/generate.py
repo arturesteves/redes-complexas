@@ -81,33 +81,34 @@ def simulate(graph, tolerance, removal_function, filename):
     initial_loads = num_spaths(graph)
 
     # calculate the size of the giant component  before removing
-    component_sizes = list(map(lambda sg: sg.size(), list(nx.connected_component_subgraphs(graph))))
+    component_sizes = list(map(lambda sg: nx.number_of_nodes(sg), list(nx.connected_component_subgraphs(graph))))
     N = max(component_sizes) if len(component_sizes) > 0 else 0
 
     #remove the node and cascade
     removal_function(graph.copy(), initial_loads, tolerance)
 
     # calculate the size of the giant component  after removing
-    component_sizes = list(map(lambda sg: sg.size(), list(nx.connected_component_subgraphs(graph))))
+    component_sizes = list(map(lambda sg: nx.number_of_nodes(sg), list(nx.connected_component_subgraphs(graph))))
     N_prime = max(component_sizes) if len(component_sizes) > 0 else 0
 
     G = N_prime / N if N != 0 else 0
 
     print("Tolerance", tolerance)
-    print("Global size: ", graph.size())
+    print("Global size: ", nx.number_of_nodes(graph))
     print("Giant Component size: ", N_prime)
+    print("N: ", N)
+    print("N': ", N_prime)
     print("G: ", G)
 
     with open(filename + ".txt", "w") as f:
-        f.write(str([tolerance, graph.size(), N_prime, G]))
+        f.write(str([tolerance, nx.number_of_nodes(graph), N_prime, G]))
 
-    return [tolerance, graph.size(), N_prime, G]
+    return [tolerance, nx.number_of_nodes(graph), N_prime, G]
 
 
 n = 5000  # number of nodes
 m = 2  # number of edges for the preferential attachment
 graph = nx.barabasi_albert_graph(n, m)  # make a random scale-free graph using barabasi_albert model
-
 
 # run the simulation for each tolerance value
 simulation_results = []
