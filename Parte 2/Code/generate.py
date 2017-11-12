@@ -1,5 +1,6 @@
 import networkx as nx
 from random import randint
+import pickle
 
 
 # compute the number of shortest paths that pass through each node. Returns dict
@@ -106,9 +107,7 @@ def simulate(graph, tolerance, removal_function, filename):
     return [tolerance, nx.number_of_nodes(graph), N_prime, G]
 
 
-n = 5000  # number of nodes
-m = 2  # number of edges for the preferential attachment
-graph = nx.barabasi_albert_graph(n, m)  # make a random scale-free graph using barabasi_albert model
+graph = nx.read_gpickle("./graph_scalefree_5000.txt")
 
 # run the simulation for each tolerance value
 simulation_results = []
