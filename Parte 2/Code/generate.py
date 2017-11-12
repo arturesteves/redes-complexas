@@ -114,11 +114,11 @@ graph = nx.barabasi_albert_graph(n, m)  # make a random scale-free graph using b
 simulation_results = []
 for tolerance in [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]:
     print("Simulating with tolerance: ", tolerance)
-    result = simulate(graph.copy(), tolerance, remove_random, "scale_free_5000_removed_by_random")
+    result = simulate(graph.copy(), tolerance, remove_random, "scale_free_5000_removed_by_random_tolerance_" + tolerance)
     simulation_results.append(result)
-    result = simulate(graph.copy(), tolerance, remove_highest_degree, "scale_free_5000_removed_by_highest_degree")
+    result = simulate(graph.copy(), tolerance, remove_highest_degree, "scale_free_5000_removed_by_highest_degree_tolerance_" + tolerance)
     simulation_results.append(result)
-    result = simulate(graph.copy(), tolerance, remove_highest_load, "scale_free_5000_removed_by_highest_load")
+    result = simulate(graph.copy(), tolerance, remove_highest_load, "scale_free_5000_removed_by_highest_load_tolerance_" + tolerance)
     simulation_results.append(result)
 
 print(simulation_results)
