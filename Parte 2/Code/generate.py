@@ -85,7 +85,7 @@ def simulate(graph, tolerance, removal_function, filename):
     N = max(component_sizes) if len(component_sizes) > 0 else 0
 
     #remove the node and cascade
-    removal_function(graph.copy(), initial_loads, tolerance)
+    removal_function(graph, initial_loads, tolerance)
 
     # calculate the size of the giant component  after removing
     component_sizes = list(map(lambda sg: nx.number_of_nodes(sg), list(nx.connected_component_subgraphs(graph))))
