@@ -15,6 +15,23 @@ def num_spaths(graph):
 
 	return n_spaths
 
+def cascade(graph, initial_loads, tolerance):
+	stable = False
+	while not stable:
+		current_load = num_spaths(graph)
+		remove_list = []
+		for node_load in current_load.items():
+			node = node_load[0]
+			load = node_load[1]
+			if load > (1 + tolerance) * initial_loads[node]:
+				remove_list.append(node)
+
+		if(len(remove_list) > 0):
+			for node in remove_list:
+				print("Node Removed by cascading")
+				graph.remove_node(node)
+				break
+		stable = True
 
 # removes a random node and cascades
 def remove_random(graph, initial_loads, tolerance):
@@ -22,19 +39,7 @@ def remove_random(graph, initial_loads, tolerance):
 	index = randint(0, len(nodes) - 1)
 	graph.remove_node(nodes[index])
 	print("Node Removed")
-	stable = False
-	while not stable:
-		stable = True
-		current_load = num_spaths(graph)
-		for node_load in current_load.items():
-			node = node_load[0]
-			load = node_load[1]
-			capacity = (1 + tolerance) * initial_loads[node]
-			if load > capacity:
-				graph.remove_node(node)
-				print("Node Removed by cascading load=", load, " and capacity=", capacity)
-				stable = False
-				break
+	cascade(graph, initial_loads, tolerance)
 
 
 # removes a node by highest degree and cascades
@@ -44,19 +49,7 @@ def remove_highest_degree(graph, initial_loads, tolerance):
 	index = max(degrees, key=degrees.get)
 	graph.remove_node(nodes[index])
 	print("Node Removed")
-	stable = False
-	while not stable:
-		stable = True
-		current_load = num_spaths(graph)
-		for node_load in current_load.items():
-			node = node_load[0]
-			load = node_load[1]
-			capacity = (1 + tolerance) * initial_loads[node]
-			if load > capacity:
-				graph.remove_node(node)
-				print("Node Removed by cascading load=", load, " and capacity=", capacity)
-				stable = False
-				break
+	cascade(graph, initial_loads, tolerance)
 
 
 # removes a node by highest load and cascades
@@ -65,21 +58,7 @@ def remove_highest_load(graph, initial_loads, tolerance):
 	index = max(initial_loads, key=initial_loads.get)
 	graph.remove_node(nodes[index])
 	print("Node Removed")
-	stable = False
-	while not stable:
-		stable = True
-		current_load = num_spaths(graph)
-		for node_load in current_load.items():
-			node = node_load[0]
-			load = node_load[1]
-			capacity = (1 + tolerance) * initial_loads[node]
-			if load > capacity:
-				graph.remove_node(node)
-				print("Node Removed by cascading load=", load, " and capacity=", capacity)
-				stable = False
-				break
-		
-
+	cascade(graph, initial_loads, tolerance)
 
 # simulates the removal of a node and calculates the cascading effect
 def simulate(graph, tolerance, removal_function, filename):
