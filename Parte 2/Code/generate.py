@@ -45,7 +45,8 @@ def num_spaths_update(graph, loads, spaths, removed_nodes):
 	print("Nodes removed: ", removed_nodes)
 	# remove all the paths whose nodes removed are either the source or the target of the shortest paths
 	for rnode in removed_nodes:
-		del spaths[rnode]
+		if rnode in list(spaths):
+			del spaths[rnode]
 		for source in list(spaths):
 			if rnode in list(spaths[source]):
 				del spaths[source][rnode]
@@ -174,7 +175,7 @@ def simulate(graph, initial_loads, spaths, tolerance, removal_function, filename
 	return [tolerance,  nx.number_of_nodes(graph), N, N_prime, G]
 
 print("Reading graph from file")
-graph = nx.read_gpickle("./graph_scalefree_5000.p")
+graph = nx.read_gpickle("./graph_scalefree_1000.p")
 print("Calculating shortest paths and initial loads")
 initial_loads, spaths = num_spaths(graph)
 
