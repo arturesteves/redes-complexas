@@ -180,27 +180,30 @@ print("Calculating shortest paths and initial loads")
 initial_loads, spaths = num_spaths(graph)
 
 # run the simulation for each tolerance value
-simulation_results = []
+simulation_results1 = []
+simulation_results2 = []
+simulation_results3 = []
 
 for tolerance in [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]:
+
 	print("**** Simulating with tolerance: " + str(tolerance) + " ****")
 	print("** Simulating with strategy: Random **")
 	result = simulate(graph.copy(), initial_loads, spaths, tolerance, remove_random,
-					  "scale_free_5000_removed_by_random_tolerance_" + str(tolerance))
-	simulation_results.append(result)
+					  "scale_free_1000_removed_by_random_tolerance_" + str(tolerance))
+	simulation_results1.append(result)
 
 	initial_loads, spaths = num_spaths(graph)
 
 	print("** Simulating with strategy: Highest Degree **")
 	result = simulate(graph.copy(), initial_loads, spaths, tolerance, remove_highest_degree,
-					  "scale_free_5000_removed_by_highest_degree_tolerance_" + str(tolerance))
-	simulation_results.append(result)
+					  "scale_free_1000_removed_by_highest_degree_tolerance_" + str(tolerance))
+	simulation_results2.append(result)
 
 	initial_loads, spaths = num_spaths(graph)
 
 	print("** Simulating with strategy: Highest Load **")
 	result = simulate(graph.copy(), initial_loads, spaths, tolerance, remove_highest_load,
-					  "scale_free_5000_removed_by_highest_load_tolerance_" + str(tolerance))
-	simulation_results.append(result)
+					  "scale_free_1000_removed_by_highest_load_tolerance_" + str(tolerance))
+	simulation_results3.append(result)
 
-print(simulation_results)
+print([simulation_results1, simulation_results2, simulation_results3])
