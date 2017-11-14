@@ -25,10 +25,11 @@ def num_spaths(graph):
 	print("It took " + seconds_to_time(elapsed_time) + " to compute the number of shortest paths that pass through each node.")
 	return n_spaths, spaths
 
-n = 1000  # number of nodes
-m = 2  # number of edges for the preferential attachment
+n = 2000  # number of nodes
+m = 1  # number of edges for the preferential attachment
 graph = nx.barabasi_albert_graph(n, m)  # make a random scale-free graph using barabasi_albert model
-nx.write_gpickle(graph, './graph_scalefree_1000.p')
+nx.write_gpickle(graph, './graph_scalefree_'+str(n)+'_'+str(m)+'.p')
+print("info: ", nx.info(graph))
 
 end = time.time()
 elapsed_time = end - start
