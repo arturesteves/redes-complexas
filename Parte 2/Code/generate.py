@@ -166,7 +166,7 @@ def simulate(graph, initial_loads, spaths, tolerance, removal_function, filename
     print("N': ", N_prime)
     print("G: ", G)
 
-    with open(filename + ".txt", "w") as f:
+    with open("./output/" + filename + ".txt", "w") as f:
         f.write(str([tolerance, N, nx.number_of_nodes(graph), N_prime, G]))
 
     return [tolerance, nx.number_of_nodes(graph), N, N_prime, G]
