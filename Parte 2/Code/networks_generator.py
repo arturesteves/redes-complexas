@@ -80,9 +80,21 @@ def generate_scalefree_network_2(num_nodes, edges):
     return graph
 
 
+def load_usa_network():
+    file = open("./western_usa_power_grid_network/opsahl_powergrid.edgelist", 'rb')
+    graph = nx.read_edgelist(file)
+    return graph
+
+
+def load_default_networks():
+    graph_1 = generate_scalefree_network(1000, 2)
+    graph_2 = generate_homogeneous_network(1000, 3)
+    graph_3 = generate_scalefree_network_2(1000, 2)
+
+
 if __name__ == "__main__":
     print("***** Init networks generation *****")
-    
+
     # generate scale free network with N = 1000, number of edges to attach from a new node to existing nodes = 1,
     # giving an average degree of approximately 2
     # The degree with the highest degree is the on with the highest load (load is given by the numbers of shortest paths
@@ -95,5 +107,9 @@ if __name__ == "__main__":
     # generate scale free network with N = 1000, average node = 2;
     # The node with the highest degree doesn't have the highest load
     graph_3 = generate_scalefree_network_2(1000, 2)
+    nx.write_edgelist(graph_3, "./networks/st.edgelist")
 
+    # load usa western power grid
+    graph_4 = load_usa_network()
+    print(nx.info(graph_4))
     print("***** End networks generation *****")
