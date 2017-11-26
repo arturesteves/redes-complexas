@@ -5,6 +5,8 @@ import time
 import copy
 
 
+# todo remove paths to themselves
+
 def seconds_to_time(time):
     day = time // (24 * 3600)
     time = time % (24 * 3600)
@@ -36,6 +38,7 @@ def num_spaths(graph):
     return n_spaths, spaths
 
 
+#################################
 # compute the number of shortest paths that pass through each node.
 def num_spaths_update(graph, loads, spaths, removed_nodes):
     # The nodes in the graph were already removed
@@ -48,6 +51,14 @@ def num_spaths_update(graph, loads, spaths, removed_nodes):
         for source in list(spaths):
             if rnode in list(spaths[source]):
                 del spaths[source][rnode]
+
+                # test:
+    # print("a", graph.nodes())
+    # for source in list(spaths):
+    # 	print("b", list(spaths[source]))
+    # 	for target in list(spaths[source]):
+    # 		if target not in graph.nodes():
+    # 			print('not in')
 
     # remove the entries of the nodes that were removed
     for node in removed_nodes:
@@ -121,7 +132,7 @@ def remove_highest_degree(graph, initial_loads, spaths, tolerance):
     degrees = dict(graph.degree())
     index = max(degrees, key=degrees.get)
     graph.remove_node(index)
-    print("Node Removed: " + str(index))
+    print("Node Removed")
     cascade(graph, initial_loads, spaths, tolerance, index)
 
 
@@ -129,12 +140,12 @@ def remove_highest_degree(graph, initial_loads, spaths, tolerance):
 def remove_highest_load(graph, initial_loads, spaths, tolerance):
     index = max(initial_loads, key=initial_loads.get)
     graph.remove_node(index)
-    print("Node Removed" + str(index))
+    print("Node Removed")
     cascade(graph, initial_loads, spaths, tolerance, index)
 
 
 # simulates the removal of a node and calculates the cascading effect
-def simulate(graph, initial_loads, spaths, tolerance, removal_function):
+def simulate(graph, initial_loads, spaths, tolerance, removal_function, filename):
     # calculate the size of the giant component  before removing
     component_sizes = list(map(lambda sg: nx.number_of_nodes(sg), list(nx.connected_component_subgraphs(graph))))
     N = max(component_sizes) if len(component_sizes) > 0 else 0
@@ -155,94 +166,43 @@ def simulate(graph, initial_loads, spaths, tolerance, removal_function):
     print("N': ", N_prime)
     print("G: ", G)
 
-    #return [tolerance, nx.number_of_nodes(graph), N, N_prime, G]
-    return {"tolerance:": tolerance, "nodes": nx.number_of_nodes(graph), "nodes_largest_cc_before_attack: ": N,
-            "nodes_largest_cc_after_attack": N_prime, "damaged_caused: ": G}
+    with open("./output/" + filename + ".txt", "w") as f:
+        f.write(str([tolerance, N, nx.number_of_nodes(graph), N_prime, G]))
+
+    return [tolerance, nx.number_of_nodes(graph), N, N_prime, G]
 
 
-def write_simulation_info_to_file(graph_name, strategy, sim_result):
-    with open("./data/" + graph_name + "_removed_by_" + strategy, "a") as file:
-        for line in sim_result:
-            file.write(str(line) + "\n")
+print("Reading graph from file")
+#graph_name = "graph_scalefree_2000_1"
+graph_name = "scalefree_1000N_2AVD"
+graph = nx.read_gpickle("./networks/" + graph_name + ".gpickle")
+print("Calculating shortest paths and initial loads")
+initial_loads, spaths = num_spaths(graph)
 
+# run the simulation for each tolerance value
+simulation_results1 = []
+simulation_results2 = []
+simulation_results3 = []
 
-# todo: colocar timers entre cada simulacao
-def all_simulatons(graph, initial_loads, spaths, tolerances, graph_name):
-    # run the simulation for each tolerance value
-    simulation_results1 = []
-    simulation_results2 = []
-    simulation_results3 = []
-    start = None
-    end = None
-    for tolerance in tolerances:
-        print()
-        print()
-        print("**** Simulating with tolerance: " + str(tolerance) + " ****")
-        print()
-        print("** Simulating with strategy: Random **")
-        start = time.time()
-        result = simulate(graph.copy(), initial_loads, spaths, tolerance, remove_random)
-        end = time.time()
-        simulation_results1.append(result)
-        print(">>Took " + seconds_to_time(end - start) + " to simulate.")
+for tolerance in [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]:
+    print("**** Simulating with tolerance: " + str(tolerance) + " ****")
+    print("** Simulating with strategy: Random **")
+    result = simulate(graph.copy(), initial_loads, spaths, tolerance, remove_random,
+                      graph_name + "_" + str(graph.size()) + "_removed_by_random_tolerance_" + str(tolerance))
+    simulation_results1.append(result)
 
-        print()
-        print("** Simulating with strategy: Highest Degree **")
-        initial_loads, spaths = num_spaths(graph)
-        start = time.time()
-        result = simulate(graph.copy(), initial_loads, spaths, tolerance, remove_highest_degree)
-        end = time.time()
-        simulation_results2.append(result)
-        print(">>Took " + seconds_to_time(end - start) + " to simulate.")
-
-        print()
-        print("** Simulating with strategy: Highest Load **")
-        initial_loads, spaths = num_spaths(graph)
-        start = time.time()
-        result = simulate(graph.copy(), initial_loads, spaths, tolerance, remove_highest_load)
-        end = time.time()
-        simulation_results3.append(result)
-        print(">>Took " + seconds_to_time(end - start) + " to simulate.")
-
-    write_simulation_info_to_file(graph_name, "random", simulation_results1)
-    write_simulation_info_to_file(graph_name, "highest_degree", simulation_results2)
-    write_simulation_info_to_file(graph_name, "highest load", simulation_results3)
-
-    return simulation_results1, simulation_results2, simulation_results3
-
-
-if __name__ == "__main__":
-    import sys
-    import numpy as np
-    from networks_generator import *
-    #from plot_distribution import *
-
-    print("****** INIT SIMULATIONS ******")
-    graph_name = sys.argv[1]
-    strategy = sys.argv[2]
-
-    #### Load Network ####
-    try:
-        graph = nx.read_gpickle("./networks/" + graph_name + ".gpickle")
-    except IOError:
-        load_default_networks()
-        graph = nx.read_gpickle("./networks/" + graph_name + ".gpickle")
-
-    # start count simulation
-    start = time.time()
     initial_loads, spaths = num_spaths(graph)
 
-    #tolerances = np.arange(0.0, 1.1, 0.1)
-    tolerances = np.arange(0.0, 1.2, 0.1)
+    print("** Simulating with strategy: Highest Degree **")
+    result = simulate(graph.copy(), initial_loads, spaths, tolerance, remove_highest_degree,
+                      graph_name + "_" + str(graph.size()) + "_removed_by_highest_degree_tolerance_" + str(tolerance))
+    simulation_results2.append(result)
 
-    print(tolerances)
-    # run all simulations
-    if strategy == "all":
-        result = all_simulatons(graph.copy(), initial_loads, spaths, tolerances, graph_name)
-        print(result)
-        # todo: join the results into a file
+    initial_loads, spaths = num_spaths(graph)
 
+    print("** Simulating with strategy: Highest Load **")
+    result = simulate(graph.copy(), initial_loads, spaths, tolerance, remove_highest_load,
+                      graph_name + "_" + str(graph.size()) + "_removed_by_highest_load_tolerance_" + str(tolerance))
+    simulation_results3.append(result)
 
-    print("****** END SIMULATIONS ******")
-    # fazer com que o ficheiro dos plots leia o ficheiro gerado das simulacoes e converta para outro onde se possa ler
-     #   "bem para fazer o plot
+print([simulation_results1, simulation_results2, simulation_results3])

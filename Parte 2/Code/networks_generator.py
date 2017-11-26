@@ -1,6 +1,5 @@
 import networkx as nx
 import time
-#from random import randint
 from random import choice
 
 
@@ -15,20 +14,37 @@ def seconds_to_time(time):
     return "%ddays:%dhours:%dminutes:%dseconds" % (day, hour, minutes, seconds)
 
 
-# estas funcoes tambem podiam retornar o graph
+def end_generation_info(graph, time, graph_type, extra=""):
+    print()
+    print("***Graph information***")
+    print(nx.info(graph))
+    print("It took " + seconds_to_time(time) + " to generate the " + graph_type + " network. " + extra)
+    print()
+
+
+def write_network_to_file(graph, name):
+    nx.write_gpickle(graph, "./networks/" + name + ".gpickle")
 
 
 def generate_scalefree_network(num_nodes, edges):
     start = time.time()
-    graph = nx.barabasi_albert_graph(num_nodes, edges)
+    graph = nx.barabasi_albert_graph(num_nodes, edges - 1)
     end = time.time()
-    # write file
-    nx.write_gpickle(graph, "./networks/scalefree_" + str(num_nodes) + "N_" + str(edges + 1) + "AVD.gpickle")
-    print()
-    print("***Graph information***")
-    print(nx.info(graph))
-    print("It took " + seconds_to_time(end - start) + " to generate the homogeneous graph.")
+    # write to file
+    write_network_to_file(graph, "scalefree_" + str(num_nodes) + "N_" + str(edges) + "AVD")
+    # print graph information
+    end_generation_info(graph, end - start, "scale-free")
+    return graph
 
+
+def generate_homogeneous_network(num_nodes, degree):
+    start = time.time()
+    graph = nx.random_regular_graph(degree, num_nodes)
+    end = time.time()
+    # write to file
+    write_network_to_file(graph, "homogeneous_" + str(num_nodes) + "N_" + str(degree) + "AVD")
+    # print graph information
+    end_generation_info(graph, end - start, "homogeneous")
     return graph
 
 
@@ -40,8 +56,8 @@ def generate_scalefree_network_2(num_nodes, edges):
     nodes_per_network = num_nodes / subnetworks
     # create several scale free networks
     for i in range(0, subnetworks):
-        scale_free_graphs.append(nx.barabasi_albert_graph(nodes_per_network, edges))
-        scale_free_graphs_labels += (chr(i + 65) + "-"),
+        scale_free_graphs.append(nx.barabasi_albert_graph(nodes_per_network, edges - 1))
+        scale_free_graphs_labels += (chr(i + 65) + "-"),  # node labeling
 
     graph = nx.Graph()  # crete empty graph
     graph.add_node(1)  # add node 1
@@ -50,44 +66,50 @@ def generate_scalefree_network_2(num_nodes, edges):
     # add all the scale free networks to the empty graph created
     graph = nx.union_all(scale_free_graphs, rename=scale_free_graphs_labels)
 
-    # append the '1' node to
+    # connect the node '1' to a node on every other scale free network
     for i in range(0, len(scale_free_graphs)-1):
         random_node = choice(list(scale_free_graphs[i].nodes()))
         graph.add_edge(1, (scale_free_graphs_labels[i] + str(random_node)))
 
     end = time.time()
     # write to file
-    nx.write_gpickle(graph, "./networks/scalefree2_" + str(num_nodes) + "N_" + str(edges + 1) + "AVD.gpickle")
+    write_network_to_file(graph, "scalefree2_" + str(num_nodes + 1) + "N_" + str(edges) + "AVD")
     # print graph information
-    print()
-    print("***Graph information***")
-    print(nx.info(graph))
-    print("It took " + seconds_to_time(end - start) + " to generate the scalefree graph where the node with "
-                                                      "the highest load doesn't have the highest degree.")
-
+    end_generation_info(graph, end - start, "scale-free", "Note: the node with the highest load doesn't have the "
+                                                          "highest degree.")
     return graph
 
 
-def generate_homogeneous_network(num_nodes, degree):
-    start = time.time()
-    graph = nx.random_regular_graph(degree, num_nodes)
-    end = time.time()
-    nx.write_gpickle(graph, "./networks/homogeneous_" + str(num_nodes) + "N_" + str(degree) + "D.gpickle")
-    print()
-    print("***Graph information***")
-    print(nx.info(graph))
-    print("It took " + seconds_to_time(end - start) + " to generate the homogeneous graph.")
+def load_usa_network():
+    file = open("./western_usa_power_grid_network/opsahl_powergrid.edgelist", 'rb')
+    graph = nx.read_edgelist(file)
+    return graph
+
+
+def load_default_networks():
+    graph_1 = generate_scalefree_network(1000, 2)
+    graph_2 = generate_homogeneous_network(1000, 3)
+    graph_3 = generate_scalefree_network_2(1000, 2)
 
 
 if __name__ == "__main__":
     print("***** Init networks generation *****")
+
     # generate scale free network with N = 1000, number of edges to attach from a new node to existing nodes = 1,
     # giving an average degree of approximately 2
-    #generate_scalefree_network(1000, 1)
+    # The degree with the highest degree is the on with the highest load (load is given by the numbers of shortest paths
+    # that pass trough the node)
+    graph_1 = generate_scalefree_network(1000, 2)
 
-    # generate homogeneous network with N = 1000, network degree = 3
-    #generate_homogeneous_network(1000, 3)
+    # generate homogeneous network with N = 1000, average node degree = 3
+    graph_2 = generate_homogeneous_network(1000, 3)
 
-    generate_scalefree_network_2(1000, 1)
-    print()
+    # generate scale free network with N = 1000, average node = 2;
+    # The node with the highest degree doesn't have the highest load
+    graph_3 = generate_scalefree_network_2(1000, 2)
+    nx.write_edgelist(graph_3, "./networks/st.edgelist")
+
+    # load usa western power grid
+    graph_4 = load_usa_network()
+    print(nx.info(graph_4))
     print("***** End networks generation *****")
