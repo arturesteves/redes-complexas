@@ -33,6 +33,7 @@ def num_spaths(graph):
     elapsed_time = end - start
     print("It took " + seconds_to_time(
         elapsed_time) + " to compute the number of shortest paths that pass through each node.")
+
     return n_spaths, spaths
 
 
@@ -87,16 +88,18 @@ def num_spaths_update(graph, loads, spaths, removed_nodes):
     print("Number of shortest paths recalculated", number_of_calculations)
 
 
+# problem? os resultados sao todos iguais qualquer que seja a tolerancia para um determinado ataque
 def cascade(graph, initial_loads, spaths, tolerance, node_removed):
     stable = False
     removed_nodes = [node_removed]
     current_load = initial_loads.copy()
-    current_spaths = spaths
+    current_spaths = spaths.copy()
     while not stable:
         stable = True
         print("Number of nodes removed: ", len(removed_nodes))
         # passing through reference themselves current_load and spaths
         num_spaths_update(graph, current_load, current_spaths, removed_nodes)
+
         removed_nodes = []
         for node_load in current_load.items():
             node = node_load[0]
@@ -155,31 +158,29 @@ def simulate(graph, initial_loads, spaths, tolerance, removal_function):
     print("N': ", N_prime)
     print("G: ", G)
 
-    #return [tolerance, nx.number_of_nodes(graph), N, N_prime, G]
-    return {"tolerance:": tolerance, "nodes": nx.number_of_nodes(graph), "nodes_largest_cc_before_attack: ": N,
+    # return [tolerance, nx.number_of_nodes(graph), N, N_prime, G]
+    return {"tolerance:": tolerance, "nodes_largest_cc_before_attack: ": N,
             "nodes_largest_cc_after_attack": N_prime, "damaged_caused: ": G}
 
 
 def write_simulation_info_to_file(graph_name, strategy, sim_result):
-    with open("./data/" + graph_name + "_removed_by_" + strategy, "a") as file:
+    with open("./data/" + graph_name + "_removed_by_" + strategy + ".txt", "a") as file:
         for line in sim_result:
             file.write(str(line) + "\n")
 
 
-# todo: colocar timers entre cada simulacao
-def all_simulatons(graph, initial_loads, spaths, tolerances, graph_name):
+def all_simulatons(graph, tolerances, graph_name):
     # run the simulation for each tolerance value
     simulation_results1 = []
     simulation_results2 = []
     simulation_results3 = []
-    start = None
-    end = None
     for tolerance in tolerances:
         print()
         print()
         print("**** Simulating with tolerance: " + str(tolerance) + " ****")
         print()
         print("** Simulating with strategy: Random **")
+        initial_loads, spaths = num_spaths(graph.copy())
         start = time.time()
         result = simulate(graph.copy(), initial_loads, spaths, tolerance, remove_random)
         end = time.time()
@@ -188,7 +189,7 @@ def all_simulatons(graph, initial_loads, spaths, tolerances, graph_name):
 
         print()
         print("** Simulating with strategy: Highest Degree **")
-        initial_loads, spaths = num_spaths(graph)
+        initial_loads, spaths = num_spaths(graph.copy())
         start = time.time()
         result = simulate(graph.copy(), initial_loads, spaths, tolerance, remove_highest_degree)
         end = time.time()
@@ -197,7 +198,7 @@ def all_simulatons(graph, initial_loads, spaths, tolerances, graph_name):
 
         print()
         print("** Simulating with strategy: Highest Load **")
-        initial_loads, spaths = num_spaths(graph)
+        initial_loads, spaths = num_spaths(graph.copy())
         start = time.time()
         result = simulate(graph.copy(), initial_loads, spaths, tolerance, remove_highest_load)
         end = time.time()
@@ -215,7 +216,8 @@ if __name__ == "__main__":
     import sys
     import numpy as np
     from networks_generator import *
-    #from plot_distribution import *
+
+    # from plot_distribution import *
 
     print("****** INIT SIMULATIONS ******")
     graph_name = sys.argv[1]
@@ -230,19 +232,16 @@ if __name__ == "__main__":
 
     # start count simulation
     start = time.time()
-    initial_loads, spaths = num_spaths(graph)
 
-    #tolerances = np.arange(0.0, 1.1, 0.1)
-    tolerances = np.arange(0.0, 1.2, 0.1)
-
-    print(tolerances)
+    # tolerances = np.arange(0.0, 1.1, 0.1)
+    #tolerances = np.arange(0.0, 0.3, 0.1)
+    tolerances = [0.0, 0.5, 1.0]
     # run all simulations
     if strategy == "all":
-        result = all_simulatons(graph.copy(), initial_loads, spaths, tolerances, graph_name)
+        result = all_simulatons(graph.copy(), tolerances, graph_name)
         print(result)
         # todo: join the results into a file
 
-
     print("****** END SIMULATIONS ******")
     # fazer com que o ficheiro dos plots leia o ficheiro gerado das simulacoes e converta para outro onde se possa ler
-     #   "bem para fazer o plot
+    #   "bem para fazer o plot
