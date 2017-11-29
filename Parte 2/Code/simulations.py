@@ -156,8 +156,8 @@ def simulate(graph, initial_loads, spaths, tolerance, removal_function):
     print("G: ", G)
 
     #return [tolerance, nx.number_of_nodes(graph), N, N_prime, G]
-    return {"tolerance:": tolerance, "nodes": nx.number_of_nodes(graph), "nodes_largest_cc_before_attack: ": N,
-            "nodes_largest_cc_after_attack": N_prime, "damaged_caused: ": G}
+    return {"tolerance:": tolerance, "graph-size": nx.number_of_nodes(graph), "N: ": N,
+            "N_prime": N_prime, "G: ": G}
 
 
 def write_simulation_info_to_file(graph_name, strategy, sim_result):
