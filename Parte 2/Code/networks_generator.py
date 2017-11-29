@@ -28,7 +28,7 @@ def write_network_to_file(graph, name):
 
 def generate_scalefree_network(num_nodes, edges):
     start = time.time()
-    graph = nx.barabasi_albert_graph(num_nodes, edges - 1)
+    graph = nx.barabasi_albert_graph(nodes_per_network, edges)
     end = time.time()
     # write to file
     write_network_to_file(graph, "scalefree_" + str(num_nodes) + "N_" + str(edges) + "AVD")
@@ -48,7 +48,7 @@ def generate_homogeneous_network(num_nodes, degree):
     return graph
 
 
-def generate_scalefree_network_2(num_nodes, edges):
+def generate_scalefree_network_2(num_nodes, edges=2):
     start = time.time()
     scale_free_graphs = []
     scale_free_graphs_labels = ()  # tuple containing the prefix name of each node of the graphs
@@ -56,7 +56,10 @@ def generate_scalefree_network_2(num_nodes, edges):
     nodes_per_network = num_nodes / subnetworks
     # create several scale free networks
     for i in range(0, subnetworks):
-        scale_free_graphs.append(nx.barabasi_albert_graph(nodes_per_network, edges - 1))
+        scale_free_graphs.append(nx.barabasi_albert_graph(nodes_per_network, edges))
+        #tempGraph = nx.scale_free_graph(nodes_per_network, alpha=0.1, beta=0.6, gamma=0.3, delta_in=0.4, delta_out=0, create_using=None, seed=None)
+        #tempGraph = tempGraph.to_undirected()
+        #scale_free_graphs.append(tempGraph)
         scale_free_graphs_labels += (chr(i + 65) + "-"),  # node labeling
 
     graph = nx.Graph()  # crete empty graph

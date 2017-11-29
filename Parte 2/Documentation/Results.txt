@@ -1,0 +1,8 @@
+TODO: Testar com uma rede que une várias redes através de mais de 1 nó.
+
+Extra:
+	Mostrar o grafo resultante com os loads dos nós como labels (gephi). 
+
+
+
+When a subnetwork is connected by a bridge, and the bridge node is removed, the whole network load decreases instead of increasing. This is due to the number of shortests path diminishing drastically. 
