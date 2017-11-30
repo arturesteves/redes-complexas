@@ -214,36 +214,21 @@ def all_simulatons(graph, initial_loads, spaths, tolerances, graph_name):
 if __name__ == "__main__":
     import sys
     import numpy as np
-    from networks_generator import *
-    #from plot_distribution import *
 
     print("****** INIT SIMULATIONS ******")
     graph_name = sys.argv[1]
-    strategy = sys.argv[2]
 
-    #### Load Network ####
-    if graph_name == "diseasome":
-        #graph = nx.read_adjlist("./networks/" + graph_name + ".csv")
-        graph = nx.read_graphml("./networks/" + graph_name + ".graphml")
-        graph = graph.to_undirected()
-    else:
-        graph = nx.read_gexf("./networks/" + graph_name + ".gexf")
+    graph = nx.read_gexf("./networks/" + graph_name + ".gexf")
 
     # start count simulation
     start = time.time()
     initial_loads, spaths = num_spaths(graph)
 
-    #tolerances = np.arange(0.0, 1.1, 0.1)
-    tolerances = np.arange(0.0, 1.1, 0.1)
-    tolerances = [ round(x,1) for x in tolerances]
+    tolerances = np.around(np.arange(0.0, 1.1, 0.1), 1)
     print(tolerances)
-    # run all simulations
-    if strategy == "all":
-        result = all_simulatons(graph.copy(), initial_loads, spaths, tolerances, graph_name)
-        print(result)
-        # todo: join the results into a file
 
+    # run all simulations
+    result = all_simulatons(graph.copy(), initial_loads, spaths, tolerances, graph_name)
+    print(result)
 
     print("****** END SIMULATIONS ******")
-    # fazer com que o ficheiro dos plots leia o ficheiro gerado das simulacoes e converta para outro onde se possa ler
-     #   "bem para fazer o plot

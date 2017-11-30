@@ -1,4 +1,4 @@
-  ____                _   __  __                                              
+﻿  ____                _   __  __                                              
  |  _ \ ___  __ _  __| | |  \/  | ___                                         
  | |_) / _ \/ _` |/ _` | | |\/| |/ _ \                                        
  |  _ <  __/ (_| | (_| | | |  | |  __/                                        
@@ -30,15 +30,12 @@ Installation:
 
 Structure
 	○ code
-		○ data			#Result of the generation
-		○ networks		#Folder where the generated networks are saved
-			○ attempt1  
-			○ attempt2
-			○ attempt3
+		○ data		# Folder where the results of the simulations are saved
+		○ networks	# Folder where the generated networks are saved
 		• generate.py   # Generates networks in the networks folder
 		• simulate.py   # Runs the simulation of the algorithm
-		• plot.py 	    # Plots the graph of the results of the simulation
-		• info.py 		# Shows the info of a graph in GEXF format
+		• plot.py 	# Plots the graph of the results of the simulation
+		• info.py 	# Shows the info of a graph in GEXF format
 
 
 Generating a network:
@@ -77,7 +74,7 @@ Simulating a network:
 	The simulate.py file executes the simulation of the algorithm with a given network. The simulation looks for the name of the file inside the networks folder.
 
 	Usage:
-	> python3 simulation.py name-of-the-network all 
+	> python3 simulation.py name-of-the-network 
 
 	The result will be output to the data folder. There should be 3 distinct files, one for each strategy with the name of the network.
 

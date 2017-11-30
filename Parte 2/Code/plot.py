@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import sys
 
+
 def get_simulation_result(basefilename):
     s = "_removed_by_"
     values = []
@@ -63,7 +64,6 @@ def plot_double(basefilename_network1, basefilename_network2):
 
 
 if __name__ == "__main__":
-    #generate_plot("scalefree_network_with_central_cluster_3")
     if len(sys.argv) == 2:
         plot_single(sys.argv[1])
     elif len(sys.argv) == 3:

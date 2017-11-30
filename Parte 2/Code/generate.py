@@ -26,6 +26,7 @@ def end_generation_info(graph, time, graph_type, extra=""):
 def write_network_to_file(graph, name):
     nx.write_gexf(graph, "./networks/" + name + ".gexf")
 
+
 def generate_homogeneous_network(num_nodes, degree, filename=""):
     start = time.time()
     graph = nx.random_regular_graph(degree, num_nodes)
@@ -48,6 +49,7 @@ def generate_attempt1(num_nodes, edges, filename=""):
     # print graph information
     end_generation_info(graph, end - start, "scale-free")
     return graph
+
 
 def generate_attempt2(num_nodes, edges=2, filename=""):
     start = time.time()
@@ -92,7 +94,7 @@ def generate_attempt3(num_nodes, edges, filename=""):
     subnetworks = 10
     nodes_per_network = num_nodes / subnetworks
     # create several scale free networks
-    for i in range(0, subnetworks):
+    for i in range(0, subnetworks - 1):
         scale_free_graphs.append(nx.barabasi_albert_graph(nodes_per_network, edges))
         # tempGraph = nx.scale_free_graph(nodes_per_network, alpha=0.1, beta=0.6, gamma=0.3, delta_in=0.4, delta_out=0, create_using=None, seed=None)
         # tempGraph = tempGraph.to_undirected()
@@ -145,19 +147,19 @@ if __name__ == "__main__":
     n = int(sys.argv[2])
     edges = int(sys.argv[3])
     degree = int(sys.argv[3])
-    
+    filename = sys.argv[4]  # todo adicionar no READ ME
 
     if attempt == 'attempt1':
-        graph = generate_attempt1(n, edges)
+        graph = generate_attempt1(n, edges, filename)
         nx.info(graph)
     elif attempt == 'attempt2':
-        graph = generate_attempt2(n, edges)
+        graph = generate_attempt2(n, edges, filename)
         nx.info(graph)
     elif attempt == 'attempt3':
-        graph = generate_attempt3(n, edges)
+        graph = generate_attempt3(n, edges, filename)
         nx.info(graph)
     elif attempt == 'homogeneous':
-        graph = generate_homogeneous_network(n, degree)
+        graph = generate_homogeneous_network(n, degree, filename)
         nx.info(graph)
     else: 
         print("ERROR: Not a valid mode of generation, the only valid modes of generation are:")
