@@ -39,7 +39,7 @@ def generate_homogeneous_network(num_nodes, degree, filename=""):
     return graph
 
 
-def generate_attempt1(num_nodes, edges, filename=""):
+def generate_experiment1(num_nodes, edges, filename=""):
     start = time.time()
     graph = nx.barabasi_albert_graph(num_nodes, edges)
     end = time.time()
@@ -51,7 +51,7 @@ def generate_attempt1(num_nodes, edges, filename=""):
     return graph
 
 
-def generate_attempt2(num_nodes, edges=2, filename=""):
+def generate_experiment2(num_nodes, edges=2, filename=""):
     start = time.time()
     scale_free_graphs = []
     scale_free_graphs_labels = ()  # tuple containing the prefix name of each node of the graphs
@@ -87,7 +87,7 @@ def generate_attempt2(num_nodes, edges=2, filename=""):
     return graph
 
 
-def generate_attempt3(num_nodes, edges, filename=""):
+def generate_experiment3(num_nodes, edges, filename=""):
     start = time.time()
     scale_free_graphs = []
     scale_free_graphs_labels = ()  # tuple containing the prefix name of each node of the graphs
@@ -143,29 +143,29 @@ def generate_attempt3(num_nodes, edges, filename=""):
 if __name__ == "__main__":
     print("***** Init network generation *****")
 
-    attempt = sys.argv[1]
+    experiment = sys.argv[1]
     n = int(sys.argv[2])
     m = int(sys.argv[3])
     d = int(sys.argv[3])
     filename = sys.argv[4]
 
-    if attempt == 'attempt1':
-        graph = generate_attempt1(n, m, filename)
+    if experiment == 'experiment1':
+        graph = generate_experiment1(n, m, filename)
         nx.info(graph)
-    elif attempt == 'attempt2':
-        graph = generate_attempt2(n, m, filename)
+    elif experiment == 'experiment2':
+        graph = generate_experiment2(n, m, filename)
         nx.info(graph)
-    elif attempt == 'attempt3':
-        graph = generate_attempt3(n, m, filename)
+    elif experiment == 'experiment3':
+        graph = generate_experiment3(n, m, filename)
         nx.info(graph)
-    elif attempt == 'homogeneous':
+    elif experiment == 'homogeneous':
         graph = generate_homogeneous_network(n, d, filename)
         nx.info(graph)
     else: 
         print("ERROR: Not a valid mode of generation, the only valid modes of generation are:")
-        print("  attemp1")
-        print("  attemp2")
-        print("  attemp3")
+        print("  experiment1")
+        print("  experiment2")
+        print("  experiment3")
         print("  homogeneous")
         print("Example: \n> python generate.py homogeneous 1000 3")
 
