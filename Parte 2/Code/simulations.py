@@ -156,8 +156,8 @@ def simulate(graph, initial_loads, spaths, tolerance, removal_function):
     print("G: ", G)
 
     #return [tolerance, nx.number_of_nodes(graph), N, N_prime, G]
-    return {"tolerance:": tolerance, "graph-size": nx.number_of_nodes(graph), "N: ": N,
-            "N_prime": N_prime, "G: ": G}
+    return {"tolerance": tolerance, "graph-size": nx.number_of_nodes(graph), "N": N,
+            "N_prime": N_prime, "G": G}
 
 
 def write_simulation_info_to_file(graph_name, strategy, sim_result):
@@ -206,7 +206,7 @@ def all_simulatons(graph, initial_loads, spaths, tolerances, graph_name):
 
     write_simulation_info_to_file(graph_name, "random", simulation_results1)
     write_simulation_info_to_file(graph_name, "highest_degree", simulation_results2)
-    write_simulation_info_to_file(graph_name, "highest load", simulation_results3)
+    write_simulation_info_to_file(graph_name, "highest_load", simulation_results3)
 
     return simulation_results1, simulation_results2, simulation_results3
 
@@ -222,10 +222,12 @@ if __name__ == "__main__":
     strategy = sys.argv[2]
 
     #### Load Network ####
-    try:
+    if graph_name == "diseasome":
+        #graph = nx.read_adjlist("./networks/" + graph_name + ".csv")
+        graph = nx.read_graphml("./networks/" + graph_name + ".graphml")
+        graph = graph.to_undirected()
+    else:
         graph = nx.read_gexf("./networks/" + graph_name + ".gexf")
-    except IOError:
-        pass
 
     # start count simulation
     start = time.time()
