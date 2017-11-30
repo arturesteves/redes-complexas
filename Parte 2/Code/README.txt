@@ -25,6 +25,8 @@ Installation:
 		> python -m pip install networkx
 	Install the numpy library
 		> python -m pip install numpy
+	Install the matplotlib library
+		> python -m pip install matplotlib
 
 Structure
 	○ code

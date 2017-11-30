@@ -235,7 +235,7 @@ if __name__ == "__main__":
 
     #tolerances = np.arange(0.0, 1.1, 0.1)
     tolerances = np.arange(0.0, 1.1, 0.1)
-
+    tolerances = [ round(x,1) for x in tolerances]
     print(tolerances)
     # run all simulations
     if strategy == "all":

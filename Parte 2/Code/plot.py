@@ -5,7 +5,7 @@ import sys
 def get_simulation_result(basefilename):
     s = "_removed_by_"
     values = []
-    filenames = [basefilename + s + "random", basefilename + s + "highest_degree", basefilename + s + "highest load"]
+    filenames = [basefilename + s + "random", basefilename + s + "highest_degree", basefilename + s + "highest_load"]
 
     for file in filenames:
         with open("./data/" + file, "r") as f:
@@ -16,19 +16,12 @@ def get_simulation_result(basefilename):
     return values
 
 
-def generate_plot(basefilename):
-    values = get_simulation_result(basefilename)
-    #random_G = [x["G"] for x in values[0]]
-    #highest_degree_G = [x["G"] for x in values[1]]
-    #highest_load_G = [x["G"] for x in values[2]]
-
-    #t = [random_G, highest_degree_G, highest_load_G]
-    # {'tolerance:': 0.0, 'graph-size': 1084, 'N: ': 1000, 'N_prime': 672, 'G: ': 0.672}
-    ####
+def plot(values, filename_n1, filename_n2=""):
     tolerances = np.arange(0.0, 1.1, 0.1)
-    style = ["--", "-.", ":"]
-    marker = ["^", ".", ""]
-    labels = ["random", "highest degree", "highest load"]
+    style = ["-->", "-.^", ":<", "--^", "-.>", ":<"]
+    #labels = ["random", "highest degree", "highest load"]
+    labels = ["random - N1", "highest degree - N1", "highest load - N1",
+              "random - N2", "highest degree - N2", "highest load - N2"]
 
     fig = plt.figure()
     ax = plt.subplot(111)
@@ -42,16 +35,38 @@ def generate_plot(basefilename):
         plot = ax.plot(tolerances, r, style[index], label=labels[index])
         index += 1
 
+    if filename_n2 == "":
+        plt.title(filename_n1 + " N: " + str(values[0][0]["N"]))
+    else:
+        plt.title(filename_n1 + " N: " + str(values[0][0]["N"]) + "\n" +
+                  filename_n2 + " N: " + str(values[3][0]["N"]))
+
     # Put a legend below current axis
-    plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05),
-               fancybox=True, shadow=True, ncol=5)
-    fig.savefig("./graphics/" + basefilename + ".png")
+    #plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05),
+    #           fancybox=True, shadow=True, ncol=3)
+    plt.legend(bbox_to_anchor=(1.0, 0.4))
+
+    fig.savefig("./graphics/" + filename_n1 + "_" + filename_n2 + ".png")
     plt.show()
+
+
+def plot_single(basefilename):
+    values = get_simulation_result(basefilename)
+    plot(values, basefilename)
+
+
+def plot_double(basefilename_network1, basefilename_network2):
+    values_network1 = get_simulation_result(basefilename_network1)
+    values_network2 = get_simulation_result(basefilename_network2)
+    values_network1.extend(values_network2)  # join the values of each network result
+    plot(values_network1, basefilename_network1, basefilename_network2)
 
 
 if __name__ == "__main__":
     #generate_plot("scalefree_network_with_central_cluster_3")
-    if len(sys.argv) > 1:
-        generate_plot(sys.argv[1])
+    if len(sys.argv) == 2:
+        plot_single(sys.argv[1])
+    elif len(sys.argv) == 3:
+        plot_double(sys.argv[1], sys.argv[2])
     else:
         raise ValueError("You need to pass the name of the base file of the simulation results.")
