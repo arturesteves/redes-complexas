@@ -223,17 +223,16 @@ if __name__ == "__main__":
 
     #### Load Network ####
     try:
-        graph = nx.read_gpickle("./networks/" + graph_name + ".gpickle")
+        graph = nx.read_gexf("./networks/" + graph_name + ".gexf")
     except IOError:
-        load_default_networks()
-        graph = nx.read_gpickle("./networks/" + graph_name + ".gpickle")
+        pass
 
     # start count simulation
     start = time.time()
     initial_loads, spaths = num_spaths(graph)
 
     #tolerances = np.arange(0.0, 1.1, 0.1)
-    tolerances = np.arange(0.0, 1.2, 0.1)
+    tolerances = np.arange(0.0, 1.1, 0.1)
 
     print(tolerances)
     # run all simulations
