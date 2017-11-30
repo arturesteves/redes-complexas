@@ -145,21 +145,21 @@ if __name__ == "__main__":
 
     attempt = sys.argv[1]
     n = int(sys.argv[2])
-    edges = int(sys.argv[3])
-    degree = int(sys.argv[3])
-    filename = sys.argv[4]  # todo adicionar no READ ME
+    m = int(sys.argv[3])
+    d = int(sys.argv[3])
+    filename = sys.argv[4]
 
     if attempt == 'attempt1':
-        graph = generate_attempt1(n, edges, filename)
+        graph = generate_attempt1(n, m, filename)
         nx.info(graph)
     elif attempt == 'attempt2':
-        graph = generate_attempt2(n, edges, filename)
+        graph = generate_attempt2(n, m, filename)
         nx.info(graph)
     elif attempt == 'attempt3':
-        graph = generate_attempt3(n, edges, filename)
+        graph = generate_attempt3(n, m, filename)
         nx.info(graph)
     elif attempt == 'homogeneous':
-        graph = generate_homogeneous_network(n, degree, filename)
+        graph = generate_homogeneous_network(n, d, filename)
         nx.info(graph)
     else: 
         print("ERROR: Not a valid mode of generation, the only valid modes of generation are:")
