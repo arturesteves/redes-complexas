@@ -1,5 +1,6 @@
 import networkx as nx
 import time
+import sys
 from random import choice
 
 
@@ -25,19 +26,6 @@ def end_generation_info(graph, time, graph_type, extra=""):
 def write_network_to_file(graph, name):
     nx.write_gexf(graph, "./networks/" + name + ".gexf")
 
-
-def generate_scalefree_network(num_nodes, edges, filename=""):
-    start = time.time()
-    graph = nx.barabasi_albert_graph(num_nodes, edges)
-    end = time.time()
-    if filename != "":
-        # write to file
-        write_network_to_file(graph, filename)
-    # print graph information
-    end_generation_info(graph, end - start, "scale-free")
-    return graph
-
-
 def generate_homogeneous_network(num_nodes, degree, filename=""):
     start = time.time()
     graph = nx.random_regular_graph(degree, num_nodes)
@@ -50,7 +38,18 @@ def generate_homogeneous_network(num_nodes, degree, filename=""):
     return graph
 
 
-def generate_scalefree_network_2(num_nodes, edges=2, filename=""):
+def generate_attempt1(num_nodes, edges, filename=""):
+    start = time.time()
+    graph = nx.barabasi_albert_graph(num_nodes, edges)
+    end = time.time()
+    if filename != "":
+        # write to file
+        write_network_to_file(graph, filename)
+    # print graph information
+    end_generation_info(graph, end - start, "scale-free")
+    return graph
+
+def generate_attempt2(num_nodes, edges=2, filename=""):
     start = time.time()
     scale_free_graphs = []
     scale_free_graphs_labels = ()  # tuple containing the prefix name of each node of the graphs
@@ -86,7 +85,7 @@ def generate_scalefree_network_2(num_nodes, edges=2, filename=""):
     return graph
 
 
-def generate_scalefree_network_3(num_nodes, edges, filename=""):
+def generate_attempt3(num_nodes, edges, filename=""):
     start = time.time()
     scale_free_graphs = []
     scale_free_graphs_labels = ()  # tuple containing the prefix name of each node of the graphs
@@ -139,39 +138,33 @@ def generate_scalefree_network_3(num_nodes, edges, filename=""):
     return graph
 
 
-def load_usa_network():
-    file = open("./western_usa_power_grid_network/opsahl_powergrid.edgelist", 'rb')
-    graph = nx.read_edgelist(file)
-    write_network_to_file(graph, "opsahl_powergrid")
-    return graph
-
-
 if __name__ == "__main__":
-    print("***** Init networks generation *****")
+    print("***** Init network generation *****")
 
-    # generate scale free network with N = 1000, number of edges to attach from a new node to existing nodes = 1,
-    # giving an average degree of approximately 2
-    # The degree with the highest degree is the on with the highest load (load is given by the numbers of shortest paths
-    # that pass trough the node)
-    graph_1 = generate_scalefree_network(1000, 2)
+    attempt = sys.argv[1]
+    n = int(sys.argv[2])
+    edges = int(sys.argv[3])
+    degree = int(sys.argv[3])
+    
 
-    # generate homogeneous network with N = 1000, average node degree = 3
-    graph_2 = generate_homogeneous_network(1000, 3)
+    if attempt == 'attempt1':
+        graph = generate_attempt1(n, edges)
+        nx.info(graph)
+    elif attempt == 'attempt2':
+        graph = generate_attempt2(n, edges)
+        nx.info(graph)
+    elif attempt == 'attempt3':
+        graph = generate_attempt3(n, edges)
+        nx.info(graph)
+    elif attempt == 'homogeneous':
+        graph = generate_homogeneous_network(n, degree)
+        nx.info(graph)
+    else: 
+        print("ERROR: Not a valid mode of generation, the only valid modes of generation are:")
+        print("  attemp1")
+        print("  attemp2")
+        print("  attemp3")
+        print("  homogeneous")
+        print("Example: \n> python generate.py homogeneous 1000 3")
 
-    # generate scale free network with N = 1000, average node = 2;
-    # The node with the highest degree doesn't have the highest load
-    graph_3 = generate_scalefree_network_2(1000, 2)
-    nx.write_edgelist(graph_3, "./networks/st.edgelist")
-
-
-    # load usa western power grid
-    graph_4 = load_usa_network()
-    print(nx.info(graph_4))
-
-    graph_5 = generate_scalefree_network_3(1000, 1, "scalefree_network_with_central_cluster_1")
-    print(nx.info(graph_5))
-
-    graph_6 = generate_scalefree_network_3(1000, 2, "scalefree_network_with_central_cluster_2")
-    print(nx.info(graph_6))
-
-    print("***** End networks generation *****")
+    print("***** End network generation *****")
