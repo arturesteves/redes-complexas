@@ -1,33 +1,38 @@
-  ____                _   __  __                                              
- |  _ \ ___  __ _  __| | |  \/  | ___                                         
- | |_) / _ \/ _` |/ _` | | |\/| |/ _ \                                        
- |  _ <  __/ (_| | (_| | | |  | |  __/                                        
- |_|_\_\___|\__,_|\__,_| |_|  |_|\___|                   _                    
- |  _ \ ___  __| | ___  ___   / ___|___  _ __ ___  _ __ | | _____  ____ _ ___ 
- | |_) / _ \/ _` |/ _ \/ __| | |   / _ \| '_ ` _ \| '_ \| |/ _ \ \/ / _` / __|
- |  _ <  __/ (_| |  __/\__ \ | |__| (_) | | | | | | |_) | |  __/>  < (_| \__ \
- |_|_\_\___|\__,_|\___||___/  \____\___/|_| |_| |_| .__/|_|\___/_/\_\__,_|___/
- |  _ \ __ _ _ __| |_  |___ \                     |_|                         
- | |_) / _` | '__| __|   __) |                                                
- |  __/ (_| | |  | |_   / __/                                                 
- |_|   \__,_|_|   \__| |_____|                                                
+	  ____                _   __  __                                              
+	 |  _ \ ___  __ _  __| | |  \/  | ___                                         
+	 | |_) / _ \/ _` |/ _` | | |\/| |/ _ \                                        
+	 |  _ <  __/ (_| | (_| | | |  | |  __/                                        
+	 |_|_\_\___|\__,_|\__,_| |_|  |_|\___|                   _                    
+	 |  _ \ ___  __| | ___  ___   / ___|___  _ __ ___  _ __ | | _____  ____ _ ___ 
+	 | |_) / _ \/ _` |/ _ \/ __| | |   / _ \| '_ ` _ \| '_ \| |/ _ \ \/ / _` / __|
+	 |  _ <  __/ (_| |  __/\__ \ | |__| (_) | | | | | | |_) | |  __/>  < (_| \__ \
+	 |_|_\_\___|\__,_|\___||___/  \____\___/|_| |_| |_| .__/|_|\___/_/\_\__,_|___/
+	 |  _ \ __ _ _ __| |_  |___ \                     |_|                         
+	 | |_) / _` | '__| __|   __) |                                                
+	 |  __/ (_| | |  | |_   / __/                                                 
+	 |_|   \__,_|_|   \__| |_____|                                           
          
 
-# baseado em:: https://gist.github.com/PurpleBooth/109311bb0361f32d87a2
-
-# Part 2 - Exploring Cascade Failure Attacks on Complex Networks
-	##Todo: 1 line description of the project
+# Part 2 - Simulating Cascade-based attacks on complex networks
+In many realistic situations the flow of physical quantities in the network, as characterized
+by the loads on nodes, is important. This project simulates the Motter-Lai model which
+shows that intentional attacks can lead to a cascade of overload failures, and can cause serious
+damage to a network. This model shows that the heterogeneity of real-world networks makes
+them particularly vulnerable to attacks in that a large scale cascade may be triggered by
+disabling a single key node.
 	
 
 # Getting Started
-	##Todo: how to get a copy of the project up and running 
+First clone the repository into a local directory:
+
+	git clone https://github.com/moraispgsi/redes-complexas.git
 	
 	
 	
-# Installation: 
+## Installation: 
 
 	The simulation uses networkX and python3.6.3 in 64bits:
-	 • https://www.python.org/downloads/release/python-363/
+	 â€¢ https://www.python.org/downloads/release/python-363/
 
 	NOTE: The **64 bit** version is important because the 32 bit version can only use 2GB of RAM and some of the simulations might need more than that.
 
@@ -46,10 +51,10 @@
 	Code
 		- data		# Folder where the results of the simulations are saved
 		- networks	# Folder where the generated networks are saved
-		• generate.py   # Generates networks in the networks folder
-		• simulate.py   # Runs the simulation of the algorithm
-		• plot.py 	# Plots the graph of the results of the simulation
-		• info.py 	# Shows the info of a graph in GEXF format
+		â€¢ generate.py   # Generates networks in the networks folder
+		â€¢ simulate.py   # Runs the simulation of the algorithm
+		â€¢ plot.py 	# Plots the graph of the results of the simulation
+		â€¢ info.py 	# Shows the info of a graph in GEXF format
 
 		
 
@@ -57,12 +62,12 @@
 		
 	The generate.py file generates a network in one of the 4 following modes:
 
-	• "experiment1" - Generates a network using the first experiment shown in the report with N nodes
+	â€¢ "experiment1" - Generates a network using the first experiment shown in the report with N nodes
 		The mode must be 'experiment1'.
 		Input Parameters:
 			mode (str) - Mode of network generation - **Required**
-		    n (int) – Number of nodes - **Required**
-		    m (int) – Number of edges to attach from a new node to existing nodes - **Required**
+		    n (int) â€“ Number of nodes - **Required**
+		    m (int) â€“ Number of edges to attach from a new node to existing nodes - **Required**
 			filename (str) - Name of the file of the network generated, without extension - **Required**
 		
 		Ouput:
@@ -75,12 +80,12 @@
 			> python generate.py experiment1 1000 2 experiment1_1000
 			
 			
-	• "experiment2" - Generates a network using the second experiment shown in the report with N+1 nodes
+	â€¢ "experiment2" - Generates a network using the second experiment shown in the report with N+1 nodes
 		The mode must be 'experiment2'.
 		Input Parameters:
 			mode (str) - Mode of network generation - **Required**
-		    n (int) – Number of nodes - **Required**
-		    m (int) – Number of edges to attach from a new node to existing nodes - **Required**
+		    n (int) â€“ Number of nodes - **Required**
+		    m (int) â€“ Number of edges to attach from a new node to existing nodes - **Required**
 			filename (str) - Name of the file of the network generated, without extension - **Required**
 			
 		Ouput:
@@ -93,12 +98,12 @@
 			> python generate.py experiment2 1000 2 experiment2_1000
 
 			
-	• "experiment3" - Generates a network using the third experiment shown in the report with N nodes and the 
+	â€¢ "experiment3" - Generates a network using the third experiment shown in the report with N nodes and the 
 		The mode must be 'experiment3'.
 		Input Parameters:
 			mode (str) - Mode of network generation - **Required**
-		    n (int) – Number of nodes - **Required**
-		    m (int) – Number of edges to attach from a new node to existing nodes - **Required**
+		    n (int) â€“ Number of nodes - **Required**
+		    m (int) â€“ Number of edges to attach from a new node to existing nodes - **Required**
 			filename (str) - Name of the file of the network generated, without extension - **Required**
 			
 		Ouput:
@@ -114,12 +119,12 @@
 			> python generate.py experiment3 1000 2 experiment3_1000
 			
 		
-	• "homogeneous" - Generates a random homogeneous network with N nodes and D the degree of each node
+	â€¢ "homogeneous" - Generates a random homogeneous network with N nodes and D the degree of each node
 		The mode must be 'homogeneous'.
 		Input Parameters:	
 			mode (str) - Mode of network generation - **Required**
-			n (integer) – The number of nodes. The value of n * d must be even - **Required**
-		    d (int) – The degree of each node - **Required**
+			n (integer) â€“ The number of nodes. The value of n * d must be even - **Required**
+		    d (int) â€“ The degree of each node - **Required**
 			filename (str) - Name of the file of the network generated, without extension - **Required**
 			
 		Usage: 
@@ -137,9 +142,9 @@
 	The tolerances go from 0 to 1, at each step the tolerance increments 0.1. 
 	
 	Strategies used to attack the network:
-		• Random
-		• Highest Degree
-		• Highest Load
+		â€¢ Random
+		â€¢ Highest Degree
+		â€¢ Highest Load
 		
 	Input:
 		Name of the network file, without extension. - **Required**
@@ -148,11 +153,11 @@
 		3 files in the directory data, one for each strategy attack. Each file contains multiple lines, each line contains the result of a simulation
 		with alfa tolerance over each node. 
 		Each line contains:
-			• The tolerance
-			• The total number of nodes of the graph after the simulation
-			• The total number of nodes of the largest connected component before the simulation
-			• The total number of nodes of the largest connected component after the simulation 
-			• The ration of nodes of the largest connected componenet before and after the simulation; Used quantify the damaged caused by a
+			â€¢ The tolerance
+			â€¢ The total number of nodes of the graph after the simulation
+			â€¢ The total number of nodes of the largest connected component before the simulation
+			â€¢ The total number of nodes of the largest connected component after the simulation 
+			â€¢ The ration of nodes of the largest connected componenet before and after the simulation; Used quantify the damaged caused by a
 				cascade failure.
 			
 		Example of one line:
