@@ -48,92 +48,95 @@ First clone the repository into a local directory:
 		
 		
 # Structure
-	Code
-		- data		# Folder where the results of the simulations are saved
-		- networks	# Folder where the generated networks are saved
-		• generate.py   # Generates networks in the networks folder
-		• simulate.py   # Runs the simulation of the algorithm
-		• plot.py 	# Plots the graph of the results of the simulation
-		• info.py 	# Shows the info of a graph in GEXF format
-
-		
+```
+	Code/
+	├── data/ 	# Folder where the results of the simulations are saved
+	├── networks/ 	# Folder where the generated networks are saved
+        ├── generate.py # Generates networks in the networks folder
+        ├── simulate.py # Runs the simulation of the algorithm
+        ├── plot.py	# Plots the graph of the results of the simulation
+        └── info.py 	# Shows the info of a graph in GEXF format
+```
 
 # Generating a network:
-		
-	The generate.py file generates a network in one of the 4 following modes:
+
+The generate.py file generates a network in one of the 4 following modes:
 
 	• "experiment1" - Generates a network using the first experiment shown in the report with N nodes
 		The mode must be 'experiment1'.
 		Input Parameters:
 			mode (str) - Mode of network generation - **Required**
-		    n (int) – Number of nodes - **Required**
-		    m (int) – Number of edges to attach from a new node to existing nodes - **Required**
+			n (int) – Number of nodes - **Required**
+			m (int) – Number of edges to attach from a new node to existing nodes - **Required**
 			filename (str) - Name of the file of the network generated, without extension - **Required**
-		
+
 		Ouput:
 			network file in the directory networks
-			
+
 		Usage: 
 			> python generate.py experiment1 [n] [m] [filename]
-		
+
 		Example:
 			> python generate.py experiment1 1000 2 experiment1_1000
-			
-			
+
+
 	• "experiment2" - Generates a network using the second experiment shown in the report with N+1 nodes
 		The mode must be 'experiment2'.
 		Input Parameters:
 			mode (str) - Mode of network generation - **Required**
-		    n (int) – Number of nodes - **Required**
-		    m (int) – Number of edges to attach from a new node to existing nodes - **Required**
+			n (int) – Number of nodes - **Required**
+			m (int) – Number of edges to attach from a new node to existing nodes - **Required**
 			filename (str) - Name of the file of the network generated, without extension - **Required**
-			
+
 		Ouput:
 			network file in the directory networks
-			
+
 		Usage: 
 			> python generate.py experiment2 [n] [m] [filename]
-			
+
 		Example:
 			> python generate.py experiment2 1000 2 experiment2_1000
 
-			
+
 	• "experiment3" - Generates a network using the third experiment shown in the report with N nodes and the 
 		The mode must be 'experiment3'.
 		Input Parameters:
 			mode (str) - Mode of network generation - **Required**
-		    n (int) – Number of nodes - **Required**
-		    m (int) – Number of edges to attach from a new node to existing nodes - **Required**
+			n (int) – Number of nodes - **Required**
+			m (int) – Number of edges to attach from a new node to existing nodes - **Required**
 			filename (str) - Name of the file of the network generated, without extension - **Required**
-			
+
 		Ouput:
 			Network file in the directory networks
-			The generated network file will be created in the "networks" folder.
-			The generated network file is in the format .gexf .
-			The generated network file can be opened in gephi in order to get a visual representation of it.
-	
+
 		Usage: 
 			> python generate.py experiment3 [n] [m] [filename]
 
 		Example:
 			> python generate.py experiment3 1000 2 experiment3_1000
-			
-		
+
+
 	• "homogeneous" - Generates a random homogeneous network with N nodes and D the degree of each node
 		The mode must be 'homogeneous'.
 		Input Parameters:	
 			mode (str) - Mode of network generation - **Required**
 			n (integer) – The number of nodes. The value of n * d must be even - **Required**
-		    d (int) – The degree of each node - **Required**
+			d (int) – The degree of each node - **Required**
 			filename (str) - Name of the file of the network generated, without extension - **Required**
-			
+	
+		Ouput:
+			network file in the directory networks
+		
 		Usage: 
 			> python generate.py homogeneous [n] [d] [filename]
-		
+
 		Example:
 			> python generate.py homogeneous 1000 3 homogeneous_1000
-			
 
+	The generated network files will be created in the "networks" folder.
+	The generated network files are in the format .gexf .
+	The generated network files can be opened in gephi in order to get a visual representation of it.
+	
 	
 # Simulating a network:
 
@@ -190,21 +193,11 @@ First clone the repository into a local directory:
 		> python plot.py experiment1_1000
 		> python plot.py experiment1_1000 experiment1_2000
 	
-
-# Information of the network:
-
-
-# Contributing
-	TODO:
-	
 	
 # Authors
-	- Ricardo Morais - (link github)
-	- Artur Esteves - (link github)
+	- Ricardo Morais - https://github.com/moraispgsi
+	- Artur Esteves - https://github.com/arturesteves
 	
 # License
 	This project is licensed under the MIT License - see the LICENSE.md file for details
 	
-
-# Acknowledgments
-	TODO: This work was based on the paper ... 
