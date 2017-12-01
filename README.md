@@ -195,8 +195,8 @@ The generate.py file generates a network in one of the 4 following modes:
 	
 	
 # Authors
-	- Ricardo Morais - https://github.com/moraispgsi
-	- Artur Esteves - https://github.com/arturesteves
+* [Ricardo Morais](https://github.com/moraispgsi)
+* [Artur Esteves](https://github.com/arturesteves)
 	
 # License
 	This project is licensed under the MIT License - see the LICENSE.md file for details
