@@ -1,0 +1,11 @@
+{'tolerance': 0.0, 'graph-size': 351, 'N': 1000, 'N_prime': 3, 'G': 0.003}
+{'tolerance': 0.1, 'graph-size': 999, 'N': 1000, 'N_prime': 999, 'G': 0.999}
+{'tolerance': 0.2, 'graph-size': 999, 'N': 1000, 'N_prime': 999, 'G': 0.999}
+{'tolerance': 0.3, 'graph-size': 999, 'N': 1000, 'N_prime': 999, 'G': 0.999}
+{'tolerance': 0.4, 'graph-size': 998, 'N': 1000, 'N_prime': 997, 'G': 0.997}
+{'tolerance': 0.5, 'graph-size': 998, 'N': 1000, 'N_prime': 997, 'G': 0.997}
+{'tolerance': 0.6, 'graph-size': 999, 'N': 1000, 'N_prime': 999, 'G': 0.999}
+{'tolerance': 0.7, 'graph-size': 999, 'N': 1000, 'N_prime': 999, 'G': 0.999}
+{'tolerance': 0.8, 'graph-size': 999, 'N': 1000, 'N_prime': 999, 'G': 0.999}
+{'tolerance': 0.9, 'graph-size': 999, 'N': 1000, 'N_prime': 999, 'G': 0.999}
+{'tolerance': 1.0, 'graph-size': 999, 'N': 1000, 'N_prime': 999, 'G': 0.999}
