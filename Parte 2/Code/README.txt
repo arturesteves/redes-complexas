@@ -46,8 +46,8 @@ Generating a network:
 		
 	The generate.py file generates a network in one of the 4 following modes:
 
-	• "attempt1" - Generates a network using the first attempt shown in the report with N nodes
-		The mode must be 'attempt1'.
+	• "experiment1" - Generates a network using the first experiment shown in the report with N nodes
+		The mode must be 'experiment1'.
 		Input Parameters:
 			mode (str) - Mode of network generation- Required
 		    n (int) – Number of nodes - Required
@@ -58,14 +58,14 @@ Generating a network:
 			network file in the directory networks
 			
 		Usage: 
-			> python generate.py attempt1 [n] [m] [filename]
+			> python generate.py experiment1 [n] [m] [filename]
 		
 		Example:
-			> python generate.py attempt1 1000 2 attempt1_1000
+			> python generate.py experiment1 1000 2 experiment1_1000
 			
 			
-	• "attempt2" - Generates a network using the second attempt shown in the report with N+1 nodes
-		The mode must be 'attempt2'.
+	• "experiment2" - Generates a network using the second experiment shown in the report with N+1 nodes
+		The mode must be 'experiment2'.
 		Input Parameters:
 			mode (str) - Mode of network generation - Required
 		    n (int) – Number of nodes - Required
@@ -76,14 +76,14 @@ Generating a network:
 			network file in the directory networks
 			
 		Usage: 
-			> python generate.py attempt2 [n] [m] [filename]
+			> python generate.py experiment2 [n] [m] [filename]
 			
 		Example:
-			> python generate.py attempt2 1000 2 attempt2_1000
+			> python generate.py experiment2 1000 2 experiment2_1000
 
 			
-	• "attempt3" - Generates a network using the third attempt shown in the report with N nodes and the 
-		The mode must be 'attempt3'.
+	• "experiment3" - Generates a network using the third experiment shown in the report with N nodes and the 
+		The mode must be 'experiment3'.
 		Input Parameters:
 			mode (str) - Mode of network generation - Required
 		    n (int) – Number of nodes - Required
@@ -97,10 +97,10 @@ Generating a network:
 			The generated network file can be opened in gephi in order to get a visual representation of it.
 	
 		Usage: 
-			> python generate.py attempt3 [n] [m] [filename]
+			> python generate.py experiment3 [n] [m] [filename]
 
 		Example:
-			> python generate.py attempt3 1000 2 attempt3_1000
+			> python generate.py experiment3 1000 2 experiment3_1000
 			
 		
 	• "homogeneous" - Generates a random homogeneous network with N nodes and D the degree of each node
@@ -151,7 +151,7 @@ Simulating a network:
 		> python simulation.py [name-of-the-network]
 	
 	Example: 
-		> python simulation.py attempt2_1000
+		> python simulation.py experiment2_1000
 	
 
 	
@@ -171,8 +171,8 @@ Plotting the network:
 		> python plot.py [f1] (f2)
 		
 	Example:
-		> python plot.py attempt1_1000
-		> python plot.py attempt1_1000 attempt1_2000
+		> python plot.py experiment1_1000
+		> python plot.py experiment1_1000 experiment1_2000
 	
 
 Information of the network:
